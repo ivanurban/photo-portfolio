@@ -1,0 +1,210 @@
+{% extends "gallery/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!--Banner-->
+
+<div class="banner">
+
+	<header>
+        <div class="myName">Ivan Urban</div>
+	</header>
+
+	
+		<!-- <img id="banner_cover" src="{% static 'img/rukavice-min.jpg' %}" alt="banner"> -->
+        <!-- <img id="banner_cover" src="{% static 'img/rukavice_neon.png' %}" alt="banner"> -->
+
+        <img id="banner_img" src="{% static 'img/rukavice_canvas_color_depth1.png' %}" alt="banner">
+    
+        <!-- Black cover over the banner image -->
+        <div class="banner_cover">
+        
+
+        </div>
+          
+        <!-- <div class="content"><a href="#" class="logo"><img id="logo" src="images/logo.png" alt=""></a></div> -->
+		
+</div>
+
+<section class="images">
+
+   <div class="wrapper">
+
+                <div class="container" id="container">
+
+                        {% for img in images %}
+
+                            {% if img.image %}
+                            <div class="imageGrid">
+
+                                <img src="{{ img.image.url }}" alt="{{img.alt}}">
+
+                                
+                            {% endif %}
+                        </div>
+            
+                        {% endfor %}
+                </div>
+
+    </div>
+    <div class="pagination">
+        {% include "pagination.html" with page=images %}
+    </div>
+    
+
+
+    <!--LIGHTBOX SLIDER Invisible, appears on click on image -->
+    <div class="modal" id="myModal">
+
+     <span class="close-cursor" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+
+            <div class="mySlides">
+
+        
+            </div>
+
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+       
+
+    </div>
+
+</section>
+
+<footer>
+
+    <div class="info">
+        <div id="ime">Ivan Urban</div>
+        <div id="adresa">Vladetina 1</div>
+        <div id="phone">062 1111111</div>
+
+    </div>
+
+    <div class="sendMail">
+        <form action="" method="post">
+
+            <label for="team_name">Enter name: </label>
+            <input id="team_name" type="text" name="name_field" value="Default name for team.">
+            <input type="submit" value="OK">
+
+        </form>
+
+    </div>
+
+    
+
+</footer>
+
+
+<!-- JS CODE - Transfer to file upon finishing -->
+<script>
+//GLOBAL VARIABLES
+//Nodelist of all images
+const slides = document.querySelectorAll(".imageGrid");
+
+let slideIndex = 0
+console.log("slideIndex iz globallne", slideIndex)
+
+
+
+let mySlides = document.querySelector(".mySlides")
+
+
+// Na klik na sliku:
+//1.Funkcije za Otvori i zatvor modal (crna pozadina sa strelicama)
+
+const openModal = () => {
+
+    document.querySelector(".modal").style.display ="flex";
+
+}
+
+const closeModal = () =>{
+
+    document.querySelector(".modal").style.display ="none";
+
+}
+//2.Funkcija za prikaz slike na modalu
+const showSlides = (n, test) =>{
+
+       
+    if(n < 0 ){
+
+    console.log("n pre dodele  iz if kad je n manje od nula",n);
+    n = slides.length -1;
+    console.log("n posle dodele iz if kad je n manje od nula",n);
+    mySlides.innerHTML = slides[n].innerHTML;
+    slideIndex = n;
+    
+    }
+
+    else if(n > slides.length -1){
+
+    n = 0;
+    mySlides.innerHTML = slides[n].innerHTML;
+    slideIndex = n;
+
+     }
+
+    if (test == 0){
+
+        mySlides.innerHTML = slides[n].innerHTML;
+        slideIndex = n
+        console.log("Slide index kad ga stavim na n u prvoj if petlji", slideIndex)
+    }
+    else if (test == 1){
+
+        console.log("n iz else if petlje",n)
+        
+        mySlides.innerHTML = slides[n].innerHTML;
+
+        
+    }
+          
+        
+               
+     
+}
+
+//3.Funkcija za menajnje slika na modalu
+
+    // Next/previous controls
+
+const plusSlides = (n) => {
+        let test = 1
+        showSlides(slideIndex +=n, test);
+        console.log("slideIndex kad ga koristin u plusSLides funkciji", slideIndex)
+       
+    }
+
+   
+
+//pokrece se prilikom prvog kliktanja na neku sliku
+for(let i = 0;i<slides.length;i++){
+
+
+    let test = 0
+    
+    slides[i].addEventListener("click", function(){
+
+    openModal();
+
+    showSlides(i, test)
+
+    
+    });
+}
+
+</script>
+
+
+
+
+{% endblock %}
+
